@@ -1,0 +1,23 @@
+{
+  "name": "com.kansascitygeek.tfcc",
+  "displayName": "Tabletop RPG Calculator",
+  "version": "1.0.0",
+  "description": "Table-top Fantasy Currency Converter",
+  "main": "index.js",
+  "scripts": {
+    "start": "cd app && npm run start",
+    "build": "rm -Rf www/* && cd app && npm run build"
+  },
+  "devDependencies": {
+    "cordova-android": "^9.0.0",
+    "cordova-plugin-whitelist": "^1.3.4"
+  },
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-whitelist": {}
+    },
+    "platforms": [
+      "android"
+    ]
+  }
+}
