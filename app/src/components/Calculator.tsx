@@ -18,7 +18,7 @@ const useStyles = createUseStyles({
       width: '17.6vw',
     },
     backgroundColor: '#484848',
-    fontSize: '4vh',
+    fontSize: '3vh',
     margin: 'auto',
     padding: '1vh 1vw',
   },
@@ -115,8 +115,8 @@ function Calculator(): JSX.Element {
   const [tickerRows, setTickerRows] = useState<TickerRow[]>([]);
 
   const handleCurrency = (denomination: Denomination) => {
-    console.log(denomination.name);
     if (!currentRow.numbered) return;
+    if (currentRow.operation === '=') return;
     const denominated: Denominated = currentRow.denominated || {};
     denominated[denomination.unit] = currentRow.numbered;
     setCurrentRow({
@@ -127,11 +127,18 @@ function Calculator(): JSX.Element {
   };
 
   const handleDigit = (digit: number) => {
-    console.log(digit);
-    setCurrentRow({
-      ...currentRow,
-      numbered: Number(`${currentRow.numbered || ''}${digit}`),
-    });
+    if (currentRow.operation === '=') {
+      setCurrentValue(0);
+      setTickerRows([...tickerRows, currentRow]);
+      setCurrentRow({
+        numbered: Number(`${currentRow.numbered || ''}${digit}`),
+      });
+    } else {
+      setCurrentRow({
+        ...currentRow,
+        numbered: Number(`${currentRow.numbered || ''}${digit}`),
+      });
+    }
   };
 
   const doOperation = (
@@ -159,7 +166,6 @@ function Calculator(): JSX.Element {
   };
 
   const handleOperation = (operation: string) => {
-    console.log(operation);
     if (currentRow.denominated && currentRow.numbered) return;
     const newValue = doOperation(
       currentValue,
@@ -180,17 +186,13 @@ function Calculator(): JSX.Element {
     setCurrentRow({});
     setTickerRows([]);
     setCurrentValue(0);
-    console.log('clear');
   };
 
   useEffect(() => {
     if (tickerRef.current) {
-      console.log(tickerRef.current.scrollTop, tickerRef.current.scrollHeight);
       tickerRef.current.scrollTop = tickerRef.current.scrollHeight;
     }
   }, [tickerRows]);
-
-  console.log('currentValue', currentValue);
 
   return (
     <div className={classes.calculator}>

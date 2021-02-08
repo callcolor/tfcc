@@ -4,13 +4,13 @@
   "private": true,
   "dependencies": {
     "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "wouter": "^2.6.0"
+    "react-dom": "^17.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "rm -Rf build && react-scripts build"
   },
+  "homepage": "./",
   "eslintConfig": {
     "extends": [
       "react-app"

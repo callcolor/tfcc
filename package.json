@@ -1,15 +1,19 @@
 {
   "name": "com.kansascitygeek.tfcc",
   "displayName": "Tabletop RPG Calculator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Table-top Fantasy Currency Converter",
   "main": "index.js",
   "scripts": {
-    "build": "npm run build:react",
-    "build:cordova": "cordova build android --release",
+    "apkup": "apkup --key service-account.json --apk app-release.apk --release-notes \"en-US=Various fixes and performance improvements.\"",
+    "build": "npm run build:react && npm run build:android",
+    "build:android": "rm -f ./app-release.apk && cordova build android --release --buildConfig && cp ./platforms/android/app/build/outputs/apk/release/app-release.apk ./",
     "build:react": "rm -Rf www/* && cd app && npm run build && cp -r build/* ../www",
-    "run": "cordova run",
-    "start": "cd app && npm run start"
+    "bump": "perl -i -pe 's/\\bversion=\"[^\"]*\\K\\b(\\d+)(?=[^\"]*\")/$1+1/e' config.xml",
+    "deploy": "npm run bump && npm run build && npm run apkup",
+    "start": "npm run start:react",
+    "start:android": "npm run build:react && cordova run android",
+    "start:react": "cd app && npm run start"
   },
   "devDependencies": {
     "cordova-android": "^9.0.0",
