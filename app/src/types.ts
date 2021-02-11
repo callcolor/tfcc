@@ -15,6 +15,7 @@ export interface Denomination {
 
 export interface TickerRow {
   denominated?: Denominated;
+  isNegative?: boolean;
   numbered?: number;
   operation?: string;
 }

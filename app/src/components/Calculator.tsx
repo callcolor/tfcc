@@ -69,6 +69,8 @@ export const valueRow = (tickerRow: TickerRow): number => {
 
 export const denominate = (value: number): Denominated => {
   const denominated: Denominated = {};
+
+  value = Math.abs(value);
   denominations.forEach((den) => {
     const denCount = Math.floor(value / den.value);
     denominated[den.unit] = denCount;
@@ -95,7 +97,9 @@ export const displayRow = (tickerRow: TickerRow): string => {
   if (numbered) {
     parts.push(`${numbered}`);
   }
-  return `${operation || ''} ${parts.join(', ')}`;
+  return `${operation || ''} ${tickerRow.isNegative ? '-' : ''}${parts.join(
+    ', '
+  )}`;
 };
 
 export const testTickerRow = {
@@ -178,6 +182,7 @@ function Calculator(): JSX.Element {
     }
     setCurrentRow({
       denominated: operation === '=' ? denominate(newValue) : undefined,
+      isNegative: newValue < 0,
       operation,
     });
   };
