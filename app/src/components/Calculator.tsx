@@ -111,7 +111,11 @@ export const testTickerRow = {
   },
 };
 
-function Calculator(): JSX.Element {
+function Calculator({
+  JustInjectMyHandlersUp = {},
+}: {
+  JustInjectMyHandlersUp?: any;
+}): JSX.Element {
   const classes = useStyles();
   const tickerRef = useRef<HTMLDivElement | null>(null);
   const [currentValue, setCurrentValue] = useState(0);
@@ -170,18 +174,34 @@ function Calculator(): JSX.Element {
   };
 
   const handleOperation = (operation: string) => {
+    // cannot evaluate a row with both denominated and numbered values
+    // user must select a denomination for the 'numbered' value first
     if (currentRow.denominated && currentRow.numbered) return;
+
+    // evaluate the new value; include currentValue and currentRow value
     const newValue = doOperation(
       currentValue,
       valueRow(currentRow),
       currentRow.operation
     );
+
+    // if current row has value
     if (valueRow(currentRow) > 0) {
+      // set current value to include current row value
       setCurrentValue(newValue);
+      // advance the ticker
       setTickerRows([...tickerRows, currentRow]);
+    } else {
+      // do not evaluate the current row.
+      // do not advance the ticker.
     }
+
+    // if operation is '=', display denominated value in simplest form
+    const denominated = operation === '=' ? denominate(newValue) : undefined;
+
+    // set operation to current row
     setCurrentRow({
-      denominated: operation === '=' ? denominate(newValue) : undefined,
+      denominated,
       isNegative: newValue < 0,
       operation,
     });
@@ -193,6 +213,11 @@ function Calculator(): JSX.Element {
     setCurrentValue(0);
   };
 
+  JustInjectMyHandlersUp.handleCurrency = handleCurrency;
+  JustInjectMyHandlersUp.handleDigit = handleDigit;
+  JustInjectMyHandlersUp.handleOperation = handleOperation;
+  JustInjectMyHandlersUp.handleClear = handleClear;
+
   useEffect(() => {
     if (tickerRef.current) {
       tickerRef.current.scrollTop = tickerRef.current.scrollHeight;
@@ -201,20 +226,22 @@ function Calculator(): JSX.Element {
 
   return (
     <div className={classes.calculator}>
-      <div className={classes.ticker}>
+      <div className={classes.ticker} id="ticker">
         <div ref={tickerRef} className={classes.tickerRows}>
           {tickerRows.map((tickerRow, index) => (
             <div key={displayRow(tickerRow) + index}>
               {displayRow(tickerRow)}
             </div>
           ))}
-          <div>{displayRow(currentRow)}</div>
+          <div id="display-row">{displayRow(currentRow)}</div>
         </div>
       </div>
-      <div className={classes.buttons}>
+      <div className={classes.buttons} id="buttons">
         <div className={classes.buttonRow}>
           <button onClick={() => handleClear()}>C</button>
-          <button onClick={() => handleOperation('/')}>/</button>
+          <button onClick={() => handleOperation('/')} id="division">
+            /
+          </button>
           <button onClick={() => handleOperation('*')}>*</button>
           <button onClick={() => handleOperation('-')}>-</button>
           <button onClick={() => handleCurrency(denominations[0])}>
@@ -224,19 +251,23 @@ function Calculator(): JSX.Element {
         <div className={classes.buttonRow}>
           <button onClick={() => handleDigit(7)}>7</button>
           <button onClick={() => handleDigit(8)}>8</button>
-          <button onClick={() => handleDigit(9)}>9</button>
+          <button onClick={() => handleDigit(9)} id="nine">
+            9
+          </button>
           <button
             onClick={() => handleOperation('+')}
             className={classes.tallButton}
           >
             +
           </button>
-          <button onClick={() => handleCurrency(denominations[1])}>
+          <button onClick={() => handleCurrency(denominations[1])} id="gp">
             {denominations[1].unit.toUpperCase()}
           </button>
         </div>
         <div className={classes.buttonRow}>
-          <button onClick={() => handleDigit(4)}>4</button>
+          <button onClick={() => handleDigit(4)} id="four">
+            4
+          </button>
           <button onClick={() => handleDigit(5)}>5</button>
           <button onClick={() => handleDigit(6)}>6</button>
           <button></button>
@@ -251,10 +282,11 @@ function Calculator(): JSX.Element {
           <button
             onClick={() => handleOperation('=')}
             className={classes.tallButton}
+            id="equals"
           >
             =
           </button>
-          <button onClick={() => handleCurrency(denominations[3])}>
+          <button onClick={() => handleCurrency(denominations[3])} id="sp">
             {denominations[3].unit.toUpperCase()}
           </button>
         </div>

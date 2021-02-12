@@ -4,8 +4,20 @@ html {
 
 body {
   background-color: #ececec;
+  overflow: hidden;
 }
 
 .App {
   min-height: 100vh;
+}
+
+div#driver-popover-item .driver-popover-footer button {
+  font-size: 2vh;
+  padding: 1vh 3vw;
+  text-transform: capitalize;
+}
+
+div#driver-popover-item .driver-popover-footer button.driver-prev-btn {
+  visibility: hidden;
+  display: none !important;
 }
