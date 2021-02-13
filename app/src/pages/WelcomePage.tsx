@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { createUseStyles } from 'react-jss';
+import React, { useContext, useEffect } from 'react';
 import Calculator from '../components/Calculator';
 import Layout from '../layouts/Layout';
 import Driver from 'driver.js';
@@ -7,15 +6,8 @@ import Driver from 'driver.js';
 import 'driver.js/dist/driver.min.css';
 import { AppContext } from '../App';
 
-const useStyles = createUseStyles({
-  disabled: {
-    pointerEvents: 'none',
-  },
-});
-
 function WelcomePage(): JSX.Element {
-  const classes = useStyles();
-  const { setCurrentPage } = useContext(AppContext);
+  const { setStorage } = useContext(AppContext);
   const JustInjectMyHandlersUp = {
     handleClear: () => null,
     handleCurrency: (d: any) => d,
@@ -27,7 +19,7 @@ function WelcomePage(): JSX.Element {
     const driver = new Driver({
       allowClose: false,
       onReset: () => {
-        setCurrentPage('calculator');
+        setStorage({ introComplete: true });
       },
     });
 
@@ -169,7 +161,7 @@ function WelcomePage(): JSX.Element {
 
   return (
     <Layout>
-      <div className={classes.disabled}>
+      <div style={{ pointerEvents: 'none' }}>
         <Calculator JustInjectMyHandlersUp={JustInjectMyHandlersUp} />
       </div>
     </Layout>

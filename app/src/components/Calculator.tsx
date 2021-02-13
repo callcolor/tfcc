@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { createUseStyles } from 'react-jss';
-import ttrpc from '../currencies/ttrpc';
+import { AppContext } from '../App';
 import { TickerRow, Denomination, Denominated } from '../types';
 
 const useStyles = createUseStyles({
@@ -51,66 +51,6 @@ const useStyles = createUseStyles({
   },
 });
 
-const currency = ttrpc;
-const denominations = currency.denominations.sort((a, b) => b.value - a.value);
-
-export const valueRow = (tickerRow: TickerRow): number => {
-  const { denominated, numbered } = tickerRow;
-  let value = 0;
-  if (denominated) {
-    denominations.forEach((den) => {
-      value += denominated[den.unit] ? denominated[den.unit] * den.value : 0;
-    });
-  } else if (numbered) {
-    value = numbered;
-  }
-  return value;
-};
-
-export const denominate = (value: number): Denominated => {
-  const denominated: Denominated = {};
-
-  value = Math.abs(value);
-  denominations.forEach((den) => {
-    const denCount = Math.floor(value / den.value);
-    denominated[den.unit] = denCount;
-    value -= denCount * den.value;
-  });
-  return denominated;
-};
-
-export const displayRow = (tickerRow: TickerRow): string => {
-  const { denominated, numbered, operation } = tickerRow;
-  let parts: (string | null)[] = [];
-  if (denominated) {
-    parts = denominations
-      .map((den) => {
-        const val = denominated[den.unit];
-        if (val !== undefined) {
-          return `${val} ${den.unit}`;
-        } else {
-          return null;
-        }
-      })
-      .filter((part) => part !== null);
-  }
-  if (numbered) {
-    parts.push(`${numbered}`);
-  }
-  return `${operation || ''} ${tickerRow.isNegative ? '-' : ''}${parts.join(
-    ', '
-  )}`;
-};
-
-export const testTickerRow = {
-  denominated: {
-    cp: 34000,
-    gp: 1,
-    pp: 2,
-    sp: 4,
-  },
-};
-
 function Calculator({
   JustInjectMyHandlersUp = {},
 }: {
@@ -121,6 +61,60 @@ function Calculator({
   const [currentValue, setCurrentValue] = useState(0);
   const [currentRow, setCurrentRow] = useState<TickerRow>({});
   const [tickerRows, setTickerRows] = useState<TickerRow[]>([]);
+  const { setCurrentPage, storage } = useContext(AppContext);
+
+  const currency = storage.currency;
+  const denominations: Denomination[] = currency.denominations.sort(
+    (a: Denomination, b: Denomination) => b.value - a.value
+  );
+
+  const valueRow = (tickerRow: TickerRow): number => {
+    const { denominated, numbered } = tickerRow;
+    let value = 0;
+    if (denominated) {
+      denominations.forEach((den) => {
+        value += denominated[den.unit] ? denominated[den.unit] * den.value : 0;
+      });
+    } else if (numbered) {
+      value = numbered;
+    }
+    return value;
+  };
+
+  const denominate = (value: number): Denominated => {
+    const denominated: Denominated = {};
+
+    value = Math.abs(value);
+    denominations.forEach((den) => {
+      const denCount = Math.floor(value / den.value);
+      denominated[den.unit] = denCount;
+      value -= denCount * den.value;
+    });
+    return denominated;
+  };
+
+  const displayRow = (tickerRow: TickerRow): string => {
+    const { denominated, numbered, operation } = tickerRow;
+    let parts: (string | null)[] = [];
+    if (denominated) {
+      parts = denominations
+        .map((den) => {
+          const val = denominated[den.unit];
+          if (val !== undefined) {
+            return `${val} ${den.unit}`;
+          } else {
+            return null;
+          }
+        })
+        .filter((part) => part !== null);
+    }
+    if (numbered) {
+      parts.push(`${numbered}`);
+    }
+    return `${operation || ''} ${tickerRow.isNegative ? '-' : ''}${parts.join(
+      ', '
+    )}`;
+  };
 
   const handleCurrency = (denomination: Denomination) => {
     if (!currentRow.numbered) return;
@@ -294,7 +288,13 @@ function Calculator({
           <button className={classes.longButton} onClick={() => handleDigit(0)}>
             0
           </button>
-          <button style={{ visibility: 'hidden' }}></button>
+          <button
+            onClick={() => {
+              setCurrentPage('settings/currency');
+            }}
+          >
+            <img className="icon" src={'icons/cog-outline.png'} />
+          </button>
           <button></button>
           <button onClick={() => handleCurrency(denominations[4])}>
             {denominations[4].unit.toUpperCase()}

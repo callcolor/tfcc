@@ -8,6 +8,7 @@ export interface Denominated {
 }
 
 export interface Denomination {
+  enabled: boolean;
   name: string;
   unit: string;
   value: number;
