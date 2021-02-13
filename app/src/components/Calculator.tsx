@@ -22,6 +22,10 @@ const useStyles = createUseStyles({
     margin: 'auto',
     padding: '1vh 1vw',
   },
+  disabled: {
+    color: 'silver !important',
+    pointerEvents: 'none',
+  },
   longButton: {
     width: '37.2vw !important',
   },
@@ -86,6 +90,7 @@ function Calculator({
 
     value = Math.abs(value);
     denominations.forEach((den) => {
+      if (!den.enabled) return;
       const denCount = Math.floor(value / den.value);
       denominated[den.unit] = denCount;
       value -= denCount * den.value;
@@ -238,7 +243,10 @@ function Calculator({
           </button>
           <button onClick={() => handleOperation('*')}>*</button>
           <button onClick={() => handleOperation('-')}>-</button>
-          <button onClick={() => handleCurrency(denominations[0])}>
+          <button
+            className={denominations[0].enabled ? 'enabled' : 'disabled'}
+            onClick={() => handleCurrency(denominations[0])}
+          >
             {denominations[0].unit.toUpperCase()}
           </button>
         </div>
@@ -254,7 +262,11 @@ function Calculator({
           >
             +
           </button>
-          <button onClick={() => handleCurrency(denominations[1])} id="gp">
+          <button
+            className={denominations[1].enabled ? 'enabled' : 'disabled'}
+            onClick={() => handleCurrency(denominations[1])}
+            id="gp"
+          >
             {denominations[1].unit.toUpperCase()}
           </button>
         </div>
@@ -265,7 +277,10 @@ function Calculator({
           <button onClick={() => handleDigit(5)}>5</button>
           <button onClick={() => handleDigit(6)}>6</button>
           <button></button>
-          <button onClick={() => handleCurrency(denominations[2])}>
+          <button
+            className={denominations[2].enabled ? 'enabled' : 'disabled'}
+            onClick={() => handleCurrency(denominations[2])}
+          >
             {denominations[2].unit.toUpperCase()}
           </button>
         </div>
@@ -280,7 +295,11 @@ function Calculator({
           >
             =
           </button>
-          <button onClick={() => handleCurrency(denominations[3])} id="sp">
+          <button
+            className={denominations[3].enabled ? 'enabled' : 'disabled'}
+            onClick={() => handleCurrency(denominations[3])}
+            id="sp"
+          >
             {denominations[3].unit.toUpperCase()}
           </button>
         </div>
@@ -296,7 +315,10 @@ function Calculator({
             <img className="icon" src={'icons/cog-outline.png'} />
           </button>
           <button></button>
-          <button onClick={() => handleCurrency(denominations[4])}>
+          <button
+            className={denominations[4].enabled ? 'enabled' : 'disabled'}
+            onClick={() => handleCurrency(denominations[4])}
+          >
             {denominations[4].unit.toUpperCase()}
           </button>
         </div>
