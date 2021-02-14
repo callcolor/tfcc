@@ -30,6 +30,7 @@ function WelcomePage(): JSX.Element {
           JustInjectMyHandlersUp.handleClear();
         },
         popover: {
+          className: 'poptop popcenter',
           description:
             "I'm a calculator but I have a few extra buttons to handle the currency denominations of popular table top role playing games.",
           nextBtnText: 'next',
@@ -43,6 +44,7 @@ function WelcomePage(): JSX.Element {
           JustInjectMyHandlersUp.handleDigit(9);
         },
         popover: {
+          className: 'poptop popcenter',
           description:
             "Let's imagine your party has just killed a dragon.  We're tasked with dividing the loot evenly among the four members of your party.  The dragon dropped 9 gold and 4 silver.  We'll start by entering the number nine (9).",
           nextBtnText: 'next',
@@ -65,6 +67,7 @@ function WelcomePage(): JSX.Element {
       {
         element: '#ticker',
         popover: {
+          className: 'popcenter',
           description:
             "The ticker shows we've entered 9 gold.  Let's continue by entering an additional 4 silver.",
           position: 'bottom-right',
@@ -96,6 +99,7 @@ function WelcomePage(): JSX.Element {
       {
         element: '#ticker',
         popover: {
+          className: 'popcenter',
           description:
             "Great!  We've got the amount entered into the calculator.  Next we'll split it evenly among all four party members.",
           position: 'bottom-right',
@@ -133,7 +137,7 @@ function WelcomePage(): JSX.Element {
           description:
             "Finally we'll press the equals (=) button to get our result!",
           position: 'top-right',
-          title: 'Numeric Input',
+          title: 'Equals',
         },
       },
       {
@@ -148,6 +152,7 @@ function WelcomePage(): JSX.Element {
       {
         element: '#buttons',
         popover: {
+          className: 'poptop',
           description:
             "Now it's your turn.  Close this tutorial to start using your new calculator.",
           nextBtnText: 'next',
@@ -156,6 +161,7 @@ function WelcomePage(): JSX.Element {
         },
       },
     ]);
+
     driver.start(0);
   }, []);
 

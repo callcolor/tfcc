@@ -15,6 +15,19 @@ body {
   color: #333;
 }
 
+div#driver-popover-item {
+  width: 60vw !important;
+  min-width: unset;
+}
+
+div#driver-popover-item.poptop {
+  top: 0px !important;
+}
+
+div#driver-popover-item.popcenter {
+  width: 80vw !important;
+}
+
 div#driver-popover-item .driver-popover-footer button {
   font-size: 2vh;
   padding: 1vh 3vw;

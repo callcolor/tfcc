@@ -20,7 +20,7 @@ interface AppContextType {
 }
 
 const defaultContext: AppContextType = {
-  currentPage: 'settings',
+  currentPage: 'calculator',
   setCurrentPage: () => null,
   setStorage: () => null,
   storage: { currency: ttrpc },
