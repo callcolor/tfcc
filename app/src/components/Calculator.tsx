@@ -17,14 +17,14 @@ const useStyles = createUseStyles({
       verticalAlign: 'top',
       width: '17.6vw',
     },
+    '& button.disabled': {
+      color: 'silver !important',
+      pointerEvents: 'none',
+    },
     backgroundColor: '#484848',
     fontSize: '3vh',
     margin: 'auto',
     padding: '1vh 1vw',
-  },
-  disabled: {
-    color: 'silver !important',
-    pointerEvents: 'none',
   },
   longButton: {
     width: '37.2vw !important',

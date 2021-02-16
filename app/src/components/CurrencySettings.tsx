@@ -19,8 +19,9 @@ const useStyles = createUseStyles({
     color: '#716b6b',
   },
   header: {
-    fontSize: '4vh',
-    height: '8vh',
+    fontSize: '3.5vh',
+    height: '6vh',
+    lineHeight: '1em',
     margin: 'auto',
     textAlign: 'center',
     width: '80vw',
@@ -87,7 +88,7 @@ const useStyles = createUseStyles({
     background: 'white',
     borderRadius: '5px',
     height: '100vh',
-    padding: '2vh 0',
+    padding: '4vh 0',
     width: '100vw',
   },
 });
