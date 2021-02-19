@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 import { AppContext } from '../App';
 import { TickerRow, Denomination, Denominated } from '../types';
+import { ReactComponent as CogIcon } from '../icons/cog-outline.svg';
 
 const useStyles = createUseStyles({
   buttonRow: {
@@ -11,6 +12,8 @@ const useStyles = createUseStyles({
   buttons: {},
   calculator: {
     '& button': {
+      border: 0,
+      borderRadius: '5px',
       fontSize: '4vh',
       height: '12vh',
       margin: '1vh 1vw',
@@ -18,13 +21,20 @@ const useStyles = createUseStyles({
       width: '17.6vw',
     },
     '& button.disabled': {
-      color: 'silver !important',
+      filter: 'brightness(.70)',
       pointerEvents: 'none',
     },
-    backgroundColor: '#484848',
+    backgroundColor: ({ colors }) => colors.calculator,
     fontSize: '3vh',
     margin: 'auto',
     padding: '1vh 1vw',
+  },
+  iconButton: {
+    '& .icon': {
+      height: '40%',
+      width: '80%',
+    },
+    fontSize: '0px !important',
   },
   longButton: {
     width: '37.2vw !important',
@@ -34,8 +44,9 @@ const useStyles = createUseStyles({
     position: 'relative',
   },
   ticker: {
-    backgroundColor: 'white',
+    backgroundColor: ({ colors }) => colors.ticker,
     borderRadius: '5px',
+    color: ({ colors }) => colors.tickerText,
     height: '26vh',
     margin: '1vh 1vw',
     overflow: 'hidden',
@@ -60,12 +71,12 @@ function Calculator({
 }: {
   JustInjectMyHandlersUp?: any;
 }): JSX.Element {
-  const classes = useStyles();
   const tickerRef = useRef<HTMLDivElement | null>(null);
   const [currentValue, setCurrentValue] = useState(0);
   const [currentRow, setCurrentRow] = useState<TickerRow>({});
   const [tickerRows, setTickerRows] = useState<TickerRow[]>([]);
   const { setCurrentPage, storage } = useContext(AppContext);
+  const classes = useStyles({ ...storage });
 
   const currency = storage.currency;
   const denominations: Denomination[] = currency.denominations.sort(
@@ -308,11 +319,12 @@ function Calculator({
             0
           </button>
           <button
+            className={classes.iconButton}
             onClick={() => {
               setCurrentPage('settings/currency');
             }}
           >
-            <img className="icon" src={'icons/cog-outline.png'} />
+            <CogIcon className="icon" />
           </button>
           <button></button>
           <button

@@ -11,10 +11,6 @@ body {
   min-height: 100vh;
 }
 
-.App button {
-  color: #333;
-}
-
 div#driver-popover-item {
   width: 60vw !important;
   min-width: unset;
@@ -37,10 +33,4 @@ div#driver-popover-item .driver-popover-footer button {
 div#driver-popover-item .driver-popover-footer button.driver-prev-btn {
   visibility: hidden;
   display: none !important;
-}
-
-.icon {
-  filter: brightness(20%);
-  height: 1.2em;
-  vertical-align: bottom;
 }

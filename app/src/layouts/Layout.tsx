@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { createUseStyles } from 'react-jss';
+import { AppContext } from '../App';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 
 const useStyles = createUseStyles({
   layout: {
-    backgroundColor: 'black',
+    '& button': {
+      backgroundColor: ({ colors }) => colors.button,
+      color: ({ colors }) => colors.buttonText,
+    },
+    '& button .icon': {
+      fill: ({ colors }: any) => colors.buttonText,
+    },
+    backgroundColor: ({ colors }) => colors.background,
     minHeight: '100vh',
   },
 });
@@ -13,7 +21,8 @@ const useStyles = createUseStyles({
 function Layout(props: {
   children: JSX.Element | JSX.Element[] | string | null | undefined;
 }): JSX.Element {
-  const classes = useStyles();
+  const { storage } = useContext(AppContext);
+  const classes = useStyles({ ...storage });
 
   return (
     <div className={classes.layout}>

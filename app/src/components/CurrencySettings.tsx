@@ -4,6 +4,10 @@ import Driver from 'driver.js';
 import { AppContext } from '../App';
 import { Currency, Denomination } from '../types';
 import { cloneDeep } from 'lodash';
+import { ReactComponent as BackIcon } from '../icons/arrow-left.svg';
+import { ReactComponent as CloseIcon } from '../icons/close.svg';
+import { ReactComponent as OnnIcon } from '../icons/toggle-switch-outline.svg';
+import { ReactComponent as OffIcon } from '../icons/toggle-switch-off-outline.svg';
 
 import 'driver.js/dist/driver.min.css';
 
@@ -19,6 +23,9 @@ const useStyles = createUseStyles({
     color: '#716b6b',
   },
   header: {
+    '& .icon': {
+      height: '70%',
+    },
     fontSize: '3.5vh',
     height: '6vh',
     lineHeight: '1em',
@@ -43,8 +50,9 @@ const useStyles = createUseStyles({
   label: {
     border: '1px solid #e8f4e6',
     borderRadius: '0px 15px 15px 0px',
+    fontSize: '3vh',
     height: 'calc(3vh - 2px)',
-    padding: '3vh 3vw',
+    padding: '2.25vh 3vw 3.75vh 3vw',
     textAlign: 'center',
     width: 'calc(6vw - 2px)',
   },
@@ -54,10 +62,15 @@ const useStyles = createUseStyles({
   },
   off: {
     '& .icon': {
-      filter:
-        'invert(50%) sepia(100%) hue-rotate(310deg) saturate(2) !important',
+      fill: 'red',
     },
-    border: '1px solid #d9b0b0  !important',
+    border: '1px solid #d9b0b0',
+  },
+  onn: {
+    '& .icon': {
+      fill: 'green',
+    },
+    border: '1px solid #b0d9b0',
   },
   save: {
     backgroundColor: '#b0d9b0',
@@ -72,15 +85,14 @@ const useStyles = createUseStyles({
   switch: {
     '& .icon': {
       display: 'block',
-      filter: 'invert(50%) sepia(100%) hue-rotate(90deg) saturate(2)',
+      height: '65%',
       margin: 'auto',
       maxWidth: '80%',
       padding: '1.5vh 1.5vw',
       textAlign: 'center',
+      width: '100%',
     },
-    border: '1px solid #b0d9b0',
     borderRadius: '15px 0px 0px 15px',
-    fontSize: '4vh',
     height: 'calc(9vh - 2px)',
     width: 'calc(12vw - 2px)',
   },
@@ -129,17 +141,15 @@ const Header = (): JSX.Element => {
   return (
     <div className={classes.wrapper}>
       <div className={classes.header}>
-        <img
+        <BackIcon
           className={`icon ${classes.backIcon}`}
-          src="icons/arrow-left.png"
           onClick={() => {
             setCurrentPage('calculator');
           }}
         />
         Currency Settings
-        <img
+        <CloseIcon
           className={`icon ${classes.closeIcon}`}
-          src="icons/close.png"
           onClick={() => {
             setCurrentPage('calculator');
           }}
@@ -150,7 +160,7 @@ const Header = (): JSX.Element => {
           <div key={den.unit} className={classes.inputRow}>
             <div
               className={`${classes.switch} ${classes.labelSwitch} ${
-                den.enabled ? 'on' : classes.off
+                den.enabled ? classes.onn : classes.off
               }`}
               onClick={() => {
                 if (index === 4) return;
@@ -159,12 +169,9 @@ const Header = (): JSX.Element => {
               }}
             >
               {den.enabled ? (
-                <img className="icon" src="icons/toggle-switch-outline.png" />
+                <OnnIcon className="icon" />
               ) : (
-                <img
-                  className="icon"
-                  src="icons/toggle-switch-off-outline.png"
-                />
+                <OffIcon className="icon" />
               )}
             </div>
             <input
